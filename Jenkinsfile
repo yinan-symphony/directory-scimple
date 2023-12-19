@@ -12,11 +12,11 @@ node("build-directory-jenkins-agent") {
 
         stage('Build and test jar') {
             gitCheckout()
-            mvn('clean package -DskipIts')
+            mvn('clean package')
         }
 
         stage("Publish the packages") {
-             sh"ls -a"
+            deployOnArtfifactory('scim-server/target/scim-server-1.0.0-SNAPSHOT.jar', 'directory-scimple/examples/')
         }
     }
 }
@@ -27,4 +27,20 @@ def mvn(String cmd) {
         sh 'base64 -d \$settings_xml > /home/jenkins/.m2/settings.xml'
         sh "mvn -B ${cmd}"
     }
+}
+
+def deployOnArtfifactory(filename, target_folder) {
+    echo "Deploying the Directory-scimple to Artifactory"
+    def artifactoryServer = Artifactory.server 'Symphony-Production-Artifactory'
+    def buildInfo = Artifactory.newBuildInfo()
+    buildInfo.name = "${filename}"
+    def uploadSpec = """{
+        "files": [{
+            "pattern": "${filename}",
+            "target": "${target_folder}"
+            }
+            ]
+    }"""
+    artifactoryServer.upload(uploadSpec, true)
+    artifactoryServer.publishBuildInfo(buildInfo)
 }
