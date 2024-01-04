@@ -16,7 +16,7 @@ node("build-directory-jenkins-agent") {
         }
 
         stage("Publish the packages") {
-            deployOnArtfifactory('scim-server/target/scim-server-1.0.0-SNAPSHOT.jar', 'directory-scimple/examples/')
+            deployOnArtfifactory('scim-server/target/scim-server-1.0.0-SNAPSHOT.jar', 'cip-local-dev/directory-scimple/')
         }
     }
 }
