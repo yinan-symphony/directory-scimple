@@ -70,7 +70,7 @@ public interface Repository<T extends ScimResource> {
    *
    *
    * @param id the identifier of the ScimResource to update and persist.
-   * @param etags optional ETag(s) in 'If-Match' header. If not null, to avoid dirty writing, {@code ScimResource.meta.version} must match one of this set (the set should contain only one element, and it must be not weak)
+   * @param etags optional ETag(s) in 'If-Match' header. If not null, to avoid dirty writing, {@code ScimResource.meta.version} must match one of this set (the set should contain only one element).
    * @param resource an updated resource to persist
    * @param includedAttributes optional set of attributes to include from ScimResource, may be used to optimize queries.
    * @param excludedAttributes optional set of attributes to exclude from ScimResource, may be used to optimize queries.
@@ -87,14 +87,14 @@ public interface Repository<T extends ScimResource> {
    * it can be used as a mechanism for caching and to ensure clients do not inadvertently overwrite other changes.
    *
    * @param id the identifier of the ScimResource to update and persist.
-   * @param etags optional ETag(s) in 'If-Match' header. If not null, to avoid dirty writing, {@code ScimResource.meta.version} must match one of this set (the set should contain only one element, and it must be not weak)
+   * @param etags optional ETag(s) in 'If-Match' header. If not null, to avoid dirty writing, {@code ScimResource.meta.version} must match one of this set (the set should contain only one element).
    * @param patchOperations a list of patch operations to apply to an existing resource.
    * @param includedAttributes optional set of attributes to include from ScimResource, may be used to optimize queries.
    * @param excludedAttributes optional set of attributes to exclude from ScimResource, may be used to optimize queries.
    * @return The newly updated ScimResource.
    * @throws ResourceException When the ScimResource cannot be updated.
    */
-  T patch(String id, Set<ETag> etags, List<PatchOperation> patchOperations, Set<AttributeReference> includedAttributes, Set<AttributeReference> excludedAttributes) throws ResourceException;
+  T patch(String id, @Nullable Set<ETag> etags, List<PatchOperation> patchOperations, Set<AttributeReference> includedAttributes, Set<AttributeReference> excludedAttributes) throws ResourceException;
 
   /**
    * Retrieves the ScimResource associated with the provided identifier.

@@ -23,6 +23,35 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Bean representing an ETag, as defined by RFC 7232 section 2.3.
+ * <p>
+ * From RFC 7644 - SCIM Protocol
+ * <p>
+ * When supported by a SCIM Server, SCIM ETags MUST be specified
+ * as an HTTP header and SHOULD be specified within the 'version'
+ * attribute contained in the resource's 'meta' attribute.
+ * <p>
+ * From RFC 7232 - HTTP Conditional Requests
+ * <p>
+ * The "ETag" header field in a response provides the current entity-tag
+ * for the selected representation, as determined at the conclusion of
+ * handling the request.  An entity-tag is an opaque validator for
+ * differentiating between multiple representations of the same
+ * resource, regardless of whether those multiple representations are
+ * due to resource state changes over time, content negotiation
+ * resulting in multiple representations being valid at the same time,
+ * or both.  An entity-tag consists of an opaque quoted string, possibly
+ * prefixed by a weakness indicator ({@code W/}).
+ * <p>
+ * Examples:<ul>
+ *      <li>ETag: "xyzzy"</li>
+ *      <li>ETag: W/"xyzzy"</li>
+ *      <li>ETag: ""</li>
+ * </ul>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc7232#section-2.3">Conditional Requests - RFC 7232</a>
+ * @see <a href="https://datatracker.ietf.org/doc/html/rfc7644#section-3.14">SCIM Protocol -  RFC 7644</a>
+ */
 @Data
 @EqualsAndHashCode
 @RequiredArgsConstructor

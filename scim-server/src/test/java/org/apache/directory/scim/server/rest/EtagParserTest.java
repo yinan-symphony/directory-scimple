@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Set;
 import org.apache.directory.scim.core.repository.ETag;
@@ -32,23 +33,36 @@ public class EtagParserTest {
   @Test
   public void testParse() {
     Set<ETag> etags = EtagParser.parseETag("\"67ab43\", \"54ed21\", W/\"7892dd\"");
-    assertNotNull(etags);
-    assertEquals(3, etags.size());
-    assertTrue(etags.stream().filter(etag -> "67ab43".equals(etag.getValue()) && !etag.isWeak()).findAny().isPresent());
-    assertTrue(etags.stream().filter(etag -> "54ed21".equals(etag.getValue()) && !etag.isWeak()).findAny().isPresent());
-    assertTrue(etags.stream().filter(etag -> "7892dd".equals(etag.getValue()) && etag.isWeak()).findAny().isPresent());
+
+    assertThat(etags)
+      .isNotNull()
+      .hasSize(3)
+      .containsOnly(
+        new ETag("67ab43", false),
+        new ETag("54ed21", false),
+        new ETag("7892dd", true));
   }
 
   @Test
   public void testParseWildcard() {
     Set<ETag> etags = EtagParser.parseETag("*");
-    assertNotNull(etags);
-    assertEquals(1, etags.size());
-    assertTrue(etags.stream().filter(etag -> "*".equals(etag.getValue()) && !etag.isWeak()).findAny().isPresent());
+
+    assertThat(etags)
+      .isNotNull()
+      .hasSize(1)
+      .containsOnly(
+        new ETag("*", false));
+  }
+
+  @Test
+  public void testParseEmpty() {
+    Set<ETag> etags = EtagParser.parseETag("");
+    assertThat(etags).isNull();
   }
 
   @Test
   public void testParseNull() {
-    assertNull(EtagParser.parseETag(null));
+    assertThat(EtagParser.parseETag(null))
+      .isNull();
   }
 }

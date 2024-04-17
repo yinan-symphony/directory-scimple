@@ -24,7 +24,7 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.scim.core.repository.ETag;
 
-public class EtagParser {
+public final class EtagParser {
 
   private EtagParser() {
   }
