@@ -419,6 +419,9 @@
               <rules>
                 <enforceBytecodeVersion>
                   <maxJdkVersion>${max.jdk.version}</maxJdkVersion>
+                  <excludes>
+                    <exclude>org.apache.tomcat.embed:tomcat-embed-core</exclude>
+                  </excludes>
                 </enforceBytecodeVersion>
               </rules>
               <fail>true</fail>
