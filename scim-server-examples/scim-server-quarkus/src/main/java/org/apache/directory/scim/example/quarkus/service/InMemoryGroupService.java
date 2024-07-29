@@ -20,17 +20,20 @@
 package org.apache.directory.scim.example.quarkus.service;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.directory.scim.core.repository.ETag;
 import org.apache.directory.scim.core.repository.PatchHandler;
-import org.apache.directory.scim.server.exception.UnableToCreateResourceException;
 import org.apache.directory.scim.core.repository.Repository;
+import org.apache.directory.scim.core.schema.SchemaRegistry;
+import org.apache.directory.scim.server.exception.UnableToCreateResourceException;
 import org.apache.directory.scim.spec.exception.ResourceException;
+import org.apache.directory.scim.spec.filter.Filter;
 import org.apache.directory.scim.spec.filter.FilterExpressions;
 import org.apache.directory.scim.spec.filter.FilterResponse;
-import org.apache.directory.scim.spec.filter.Filter;
 import org.apache.directory.scim.spec.filter.PageRequest;
 import org.apache.directory.scim.spec.filter.SortRequest;
 import org.apache.directory.scim.spec.filter.attribute.AttributeReference;
@@ -39,22 +42,18 @@ import org.apache.directory.scim.spec.resources.ScimExtension;
 import org.apache.directory.scim.spec.resources.ScimGroup;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
-import org.apache.directory.scim.core.schema.SchemaRegistry;
 
 @Named
 @ApplicationScoped
 public class InMemoryGroupService implements Repository<ScimGroup> {
 
-  private final Map<String, ScimGroup> groups = new HashMap<>();
+  private final Map<String, ScimGroup> groups = new ConcurrentHashMap<>();
 
   private SchemaRegistry schemaRegistry;
 
