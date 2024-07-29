@@ -27,6 +27,7 @@ import org.apache.directory.scim.core.repository.Repository;
 import org.apache.directory.scim.core.schema.SchemaRegistry;
 import org.apache.directory.scim.server.exception.UnableToCreateResourceException;
 import org.apache.directory.scim.spec.exception.ResourceException;
+import org.apache.directory.scim.spec.exception.ResourceNotFoundException;
 import org.apache.directory.scim.spec.filter.Filter;
 import org.apache.directory.scim.spec.filter.FilterExpressions;
 import org.apache.directory.scim.spec.filter.FilterResponse;
@@ -134,12 +135,18 @@ public class InMemoryUserService implements Repository<ScimUser> {
 
   @Override
   public ScimUser update(String id, Set<ETag> etags, ScimUser resource, Set<AttributeReference> includedAttributeReferences, Set<AttributeReference> excludedAttributeReferences) throws ResourceException {
+    if (!users.containsKey(id)) {
+      throw new ResourceNotFoundException(id);
+    }
     users.put(id, resource);
     return resource;
   }
 
   @Override
   public ScimUser patch(String id, Set<ETag> etags, List<PatchOperation> patchOperations, Set<AttributeReference> includedAttributeReferences, Set<AttributeReference> excludedAttributeReferences) throws ResourceException {
+    if (!users.containsKey(id)) {
+      throw new ResourceNotFoundException(id);
+    }
     ScimUser resource = patchHandler.apply(get(id), patchOperations);
     users.put(id, resource);
     return resource;
@@ -157,8 +164,10 @@ public class InMemoryUserService implements Repository<ScimUser> {
    * @see Repository#delete(String)
    */
   @Override
-  public void delete(String id) {
-    users.remove(id);
+  public void delete(String id) throws ResourceException {
+    if (users.remove(id) == null) {
+      throw new ResourceNotFoundException(id);
+    }
   }
 
   /**
