@@ -15,19 +15,21 @@
 # specific language governing permissions and limitations
 # under the License.
 
-name: Nightly Full Build
+name: Apache Rat
 
 on:
-  schedule:
-    - cron: "0 0 * * *" # nightly
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
 
 jobs:
-  cron:
+  rat:
     uses: ./.github/workflows/maven.yml
     with:
-      name: "Dependency Check"
-      jobs_path: "cron / maven"
-      mvn: verify dependency-check:check -Pci
+      name: "Apache Rat - Check"
+      jobs_path: "rat / maven"
+      mvn: apache-rat:check
       java-version: 17
       java-distribution: 'zulu'
     secrets: inherit
