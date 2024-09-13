@@ -49,10 +49,6 @@ public class Mapper {
   public Mapper() {
   }
 
-  public String convertDateTime(Instant instant) {
-    return iso8601DateTimeFormatter.format(instant);
-  }
-
   /**
    * Converts an ISO 8601 DateTime string into the equivalent Java Date object.
    *
