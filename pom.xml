@@ -15,7 +15,10 @@
  specific language governing permissions and limitations
  under the License. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         child.project.url.inherit.append.path="false">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -70,8 +73,10 @@
     <module>scim-coverage</module>
   </modules>
 
-  <scm>
-    <connection>scm:git:https://github.com/apache/directory-scimple.git</connection>
+  <scm child.scm.connection.inherit.append.path="false"
+       child.scm.developerConnection.inherit.append.path="false"
+       child.scm.url.inherit.append.path="false">
+  <connection>scm:git:https://github.com/apache/directory-scimple.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/apache/directory-scimple.git</developerConnection>
     <url>https://github.com/apache/directory-scimple</url>
     <tag>HEAD</tag>
@@ -83,6 +88,41 @@
       <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
+
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/apache/directory-scimple/actions</url>
+  </ciManagement>
+
+  <mailingLists combine.self="override">
+    <mailingList>
+      <name>The Directory SCIMple List</name>
+      <subscribe>scimple-subscribe@directory.apache.org</subscribe>
+      <unsubscribe>scimple-unsubscribe@directory.apache.org</unsubscribe>
+      <post>scimple@directory.apache.org</post>
+      <archive>https://lists.apache.org/list.html?scimple@directory.apache.org</archive>
+    </mailingList>
+    <mailingList>
+      <name>The Directory Developers List</name>
+      <subscribe>dev-subscribe@directory.apache.org</subscribe>
+      <unsubscribe>dev-unsubscribe@directory.apache.org</unsubscribe>
+      <post>dev@directory.apache.org</post>
+      <archive>https://lists.apache.org/list.html?dev@directory.apache.org</archive>
+    </mailingList>
+    <mailingList>
+      <name>The Directory Notifications List</name>
+      <subscribe>notifications-subscribe@directory.apache.org</subscribe>
+      <unsubscribe>notifications-unsubscribe@directory.apache.org</unsubscribe>
+      <post>notifications@directory.apache.org</post>
+      <archive>https://lists.apache.org/list.html?notifications@directory.apache.org</archive>
+    </mailingList>
+    <mailingList>
+      <name>The Directory Commits (SVN and Git) List</name>
+      <subscribe>commits-subscribe@directory.apache.org</subscribe>
+      <unsubscribe>commits-unsubscribe@directory.apache.org</unsubscribe>
+      <archive>https://lists.apache.org/list.html?commits@directory.apache.org</archive>
+    </mailingList>
+  </mailingLists>
 
   <developers>
     <developer>
@@ -842,6 +882,19 @@
                 <configuration>
                   <excludePackageNames>org.apache.directory.scim.example.*,org.apache.directory.scim.test.*</excludePackageNames>
                 </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.cyclonedx</groupId>
+            <artifactId>cyclonedx-maven-plugin</artifactId>
+            <version>2.8.1</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>makeAggregateBom</goal>
+                </goals>
+                <phase>package</phase>
               </execution>
             </executions>
           </plugin>
