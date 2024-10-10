@@ -25,7 +25,7 @@ def mvn(String cmd) {
     withCredentials([file(credentialsId: 'maven-settings', variable: 'settings_xml')]) {
         sh 'mkdir -p /home/jenkins/.m2'
         sh 'base64 -d \$settings_xml > /home/jenkins/.m2/settings.xml'
-        sh "mvn -B ${cmd}"
+        sh "./mvnw -B ${cmd}"
     }
 }
 
